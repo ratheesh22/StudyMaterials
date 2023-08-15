@@ -1,0 +1,643 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red255\green0\blue0;\red75\green172\blue198;\red0\green176\blue80;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 Angular\par
+Angular Selectors\par
+\cf1\b\fs36 Tag Selectors\par
+\cf0\b0\fs22 @Component(\{\par
+\cf1\b   selector: 'app-example',\par
+\cf0\b0   templateUrl: './example.component.html',\par
+  styleUrls: ['./example.component.css']\par
+\})\par
+export class ExampleComponent \{\par
+  // Component logic goes here\par
+\}\par
+\cf1\b <app-example></app-example>---use in html file\par
+\fs36 Attribute Selectors\fs22\par
+\cf0\b0 @Component(\{\par
+\cf1\b   selector: '[app-example]',\par
+\cf0\b0   templateUrl: './example.component.html',\par
+  styleUrls: ['./example.component.css']\par
+\})\par
+\cf1\b <div app-example></div>\par
+\fs36 Class Selectors\fs22\par
+\cf0\b0 @Component(\{\par
+\cf2\b   selector: '.app-example',\par
+\cf0\b0   templateUrl: './example.component.html',\par
+  styleUrls: ['./example.component.css']\par
+\})\par
+\cf2\b <div class="app-example"></div>\par
+-------------------------------------------------------------------------------------------------------------------\par
+@Component(\{\par
+  selector: 'app-example',\par
+  templateUrl: './example.component.html', // External template file\par
+\cf1   template: '<h1>Inline Template Example</h1>', // Inline template\par
+\cf2   styleUrls: ['./example.component.css']\par
+  styleUrls: ['./example.component.css', './additional-styles.css'] // External style files\par
+\cf1 styles: [\par
+    `\par
+    h1 \{\par
+      color: blue;\par
+    \}\par
+    `,\par
+    // More styles can be added here\par
+  ] // Inline styles\par
+\cf2\})\par
+----------------------------------------------------------------------------------------------------\par
+\cf1\fs36 Databinding\par
+\cf0\b0\fs24 Data binding is a fundamental concept in Angular that enables communication between the component's TypeScript code (the data) and its template (the view). It allows you to synchronize and update the values between the component and the UI, making your application dynamic and responsive. Angular supports four types of data binding:\par
+\cf1\b\fs36 String Interpolation-\{\{\}\}\cf0\b0\fs24\par
+String Interpolation in Angular is a feature that allows you to embed dynamic values from the component class into the component's template. It is denoted by double curly braces \{\{ \}\}.\par
+export class ExampleComponent \{\par
+  name: string = 'John Doe';\par
+  age: number = 30;\par
+\}\par
+<h1>Hello, \{\{ name \}\}!</h1>\par
+<p>You are \{\{ age \}\} years old.</p>\par
+<p>\{\{'Server'\}\} with \{\{age\}\}</p>\par
+\cf1\b\fs36 Property binding-[]\cf0\b0\fs24\par
+Property binding in Angular allows you to set the value of an HTML element property (attribute) dynamically based on the value of a component's property. It is denoted by square brackets [] and is used to pass data from the component's class to the template.\par
+<element [property]="componentProperty"></element>\par
+export class ExampleComponent \{\par
+  imageUrl = 'path/to/image.png';\par
+  isDisabled = true;\par
+\}\par
+<img [src]="imageUrl" alt="Image">\par
+\par
+<!-- Property binding for the 'disabled' attribute of the button element -->\par
+<button [disabled]="isDisabled">Click Me</button>\par
+\cf1\b\fs36 Event binding-()\par
+\cf0\b0\fs24 Event binding is one of the fundamental concepts in Angular that allows you to respond to user interactions or other events in the application. It enables you to attach custom event handlers to DOM events like button clicks, form submissions, mouse movements, keyboard inputs, and more. Event binding is denoted by the (event) syntax in the component's template.\par
+To use event binding in Angular, you follow these steps:\par
+In the component's template, use the (event) syntax to bind the event to a method in the component's class.\par
+<button \b (click)\b0 ="onButtonClick()">Click me!</button>\par
+export class AppComponent \{\par
+  onButtonClick() \{\par
+    alert('Button Clicked!');\par
+  \}\par
+\}\par
+<input (input)="hello($event)">\par
+  <p>\{\{eventResult\}\}</p>\par
+eventResult='';\par
+  hello(event:any)\{\par
+    console.log(event);\par
+    this.eventResult=event.target.value;\par
+  \}\par
+------------------------------------------------------------------------------------------------------\par
+\cf1\b\fs36 Two way Data binding[(ngModel)]\cf0\b0\fs24\par
+For Two-Way-Binding (covered in the next lecture) to work, you need to enable the ngModel  directive. This is done by adding the FormsModule  to the imports[]  array in the AppModule.You then also need to add the import from @angular/forms  in the app.module.ts file:\par
+import \{ FormsModule \} from '@angular/forms'; \par
+Two-way data binding is a feature in Angular that allows synchronization of data between the component's class and the template. It combines both property binding and event binding into a single notation, denoted by [(ngModel)].\par
+import \{ NgModule \} from '@angular/core';\par
+import \{ BrowserModule \} from '@angular/platform-browser';\par
+import \{ FormsModule \} from '@angular/forms'; // Import FormsModule for two-way binding\par
+\par
+import \{ AppComponent \} from './app.component';\par
+\par
+@NgModule(\{\par
+  declarations: [AppComponent],\par
+\cf1   imports: [BrowserModule, FormsModule], // Add FormsModule to imports array\par
+\cf0   providers: [],\par
+  bootstrap: [AppComponent]\par
+\})\par
+export class AppModule \{\}\par
+mport \{ Component \} from '@angular/core';\par
+\par
+@Component(\{\par
+  selector: 'app-root',\par
+  templateUrl: './app.component.html',\par
+  styleUrls: ['./app.component.css']\par
+\})\par
+export class AppComponent \{\par
+\cf1   message: string = 'Initial message';\par
+\cf0\}\par
+<input [(ngModel)]="message" type="text" />\par
+<p>\{\{ message \}\}</p>\par
+--------------------------------------------------------------------------------------------------\par
+\cf1\b\fs32 Directives\par
+\b0\fs24 Component Directives:\par
+\cf0 Components are directives with templates. They are the most commonly used directive type in Angular and serve as the building blocks of an Angular application. Components combine both the presentation (HTML template) and the behavior (Typescript code) into a single unit. They are used to create reusable UI elements and are declared using the @Component decorator.\par
+import \{ Component \} from '@angular/core';\par
+\par
+@Component(\{\par
+  selector: 'app-example',\par
+  templateUrl: './example.component.html',\par
+  styleUrls: ['./example.component.css']\par
+\})\par
+export class ExampleComponent \{\par
+  // Component logic and properties go here\par
+\}\par
+\cf1 Attribute Directives:\par
+\cf0 Attribute directives change the appearance or behavior of an existing DOM element. They are used as attributes on HTML elements and are declared using the @Directive decorator.\par
+@Directive(\{\par
+  selector: '[appCustomDirective]'\par
+\})\par
+export class CustomDirective \{\par
+  constructor(private el: ElementRef) \{\}\par
+\par
+  @HostListener('mouseenter') onMouseEnter() \{\par
+    // Logic to be executed when the mouse enters the element with the directive\par
+    this.highlight('yellow');\par
+  \}\par
+\par
+  @HostListener('mouseleave') onMouseLeave() \{\par
+    // Logic to be executed when the mouse leaves the element with the directive\par
+    this.highlight(null);\par
+  \}\par
+\par
+  private highlight(color: string | null) \{\par
+    this.el.nativeElement.style.backgroundColor = color;\par
+  \}\par
+\}\par
+\cf1 Structural Directives:\par
+\cf0 Structural directives change the DOM layout by adding or removing DOM elements based on a condition. They are typically used with a template syntax that includes an asterisk (*ngIf, *ngFor, *ngSwitchCase). Structural directives are also declared using the @Directive decorator.\par
+\cf1\b\fs28 *ngIf structural Directives\par
+\cf0\b0\fs24 <div *ngIf="showContent">\par
+  <!-- Content to be displayed when 'showContent' is true -->\par
+</div>\par
+export class ExampleComponent \{\par
+  showContent: boolean = true;\par
+\}\par
+\cf1 ngIf else;\par
+\cf0 <ng-container *ngIf="condition; else elseBlock">\par
+  <!-- Content to be displayed if the condition is true -->\par
+  <p>The condition is true.</p>\par
+</ng-container>\par
+<ng-template #elseBlock>\par
+  <!-- Content to be displayed if the condition is false -->\par
+  <p>The condition is false.</p>\par
+</ng-template>\par
+\cf1\b\fs28 *ngStyle structural Directives\par
+\cf0\b0\fs24 In Angular, ngStyle is a built-in directive that allows you to dynamically apply inline CSS styles to an HTML element based on expressions in your component. It provides a way to apply styles conditionally, making your templates more flexible and responsive.\par
+The syntax for using ngStyle is as follows:\par
+\par
+<div [ngStyle]="stylesObject">\par
+  <!-- Content goes here -->\par
+</div>\par
+export class ExampleComponent \{\par
+  textColor: string = 'blue';\par
+  fontSize: string = '16px';\par
+\}\par
+<div [ngStyle]="\{ 'color': textColor, 'font-size': fontSize \}">\par
+  <p>This text will have the color and font size specified in the component.</p>\par
+</div>\par
+In Angular, ngClass is a built-in directive that allows you to conditionally apply CSS classes to an HTML element based on expressions in your component. It provides a way to toggle CSS classes dynamically, making your templates more flexible and responsive.\par
+\par
+The syntax for using ngClass is as follows:\par
+\par
+html\par
+Copy code\par
+<div [ngClass]="classExpression">\par
+  <!-- Content goes here -->\par
+</div>\par
+Here, classExpression is an expression that evaluates to a string, an array of strings, or an object. The class names specified in classExpression will be applied to the element if the expression evaluates to a truthy value. If the expression is falsy, the classes will be removed from the element.\par
+\par
+Using a string expression:\par
+html\par
+Copy code\par
+<div [ngClass]="'my-class1 my-class2'">\par
+  <!-- Content goes here -->\par
+</div>\par
+In this case, the classes "my-class1" and "my-class2" will always be applied to the div element.\par
+\par
+Using an array expression:\par
+html\par
+Copy code\par
+<div [ngClass]="['my-class1', 'my-class2', condition ? 'my-class3' : '']">\par
+  <!-- Content goes here -->\par
+</div>\par
+Here, the classes "my-class1" and "my-class2" will always be applied. If condition is true, "my-class3" will also be applied; otherwise, it won't be added.\par
+\par
+Using an object expression:\par
+html\par
+Copy code\par
+<div [ngClass]="\{ 'my-class1': condition1, 'my-class2': condition2, 'my-class3': condition3 \}">\par
+  <!-- Content goes here -->\par
+</div>\par
+In this case, each property of the object represents a class name, and the corresponding value indicates whether the class should be applied (true) or not applied (false).\par
+\par
+Example:\par
+\par
+Assume you have a component with some boolean properties that control the application of certain classes:\par
+\par
+typescript\par
+Copy code\par
+import \{ Component \} from '@angular/core';\par
+\par
+@Component(\{\par
+  selector: 'app-example',\par
+  templateUrl: './example.component.html'\par
+\})\par
+export class ExampleComponent \{\par
+  applyClass1: boolean = true;\par
+  applyClass2: boolean = false;\par
+  applyClass3: boolean = true;\par
+\}\par
+Now, in the corresponding template file (example.component.html), you can use ngClass to apply the classes dynamically:\par
+\par
+html\par
+Copy code\par
+<div [ngClass]="\{ 'my-class1': applyClass1, 'my-class2': applyClass2, 'my-class3': applyClass3 \}">\par
+  <p>This div will have different classes applied based on the component properties.</p>\par
+</div>\par
+\cf1\b\fs32 ngClass \cf0\b0\fs24\par
+In this example, the ngClass directive is used to conditionally apply the classes "my-class1", "my-class2", and "my-class3" based on the values of applyClass1, applyClass2, and applyClass3 properties in the component.\par
+<div class="my-class1 my-class3">\par
+  <p>This div will have different classes applied based on the component properties.</p>\par
+</div>\par
+With ngClass, you can easily toggle CSS classes in your template based on the application's state or other conditions, providing more flexibility in styling your Angular application.\par
+\cf1\b\fs32 *ngFor \par
+\cf0\b0\fs24 In Angular, *ngFor is a structural directive used for rendering lists or collections of elements in your templates. It allows you to iterate over an array or object and generate HTML elements for each item in the collection.\par
+<container-element *ngFor="let item of items; let i = index">\par
+  <!-- Content to be repeated for each item in the 'items' array -->\par
+  <!-- 'item' represents the current item being iterated over -->\par
+  <!-- 'i' represents the index of the current item in the array -->\par
+</container-element>\par
+export class ExampleComponent \{\par
+  names: string[] = ['Alice', 'Bob', 'Charlie', 'David'];\par
+\}\par
+\cf1\b\fs32 Custom property binding in Angular\par
+@input()-->Data flows from parent to child\par
+\cf0\b0\fs24 import \{ Component, Input \} from '@angular/core'; // First, import Input\par
+export class ChildComponent \{\par
+  @Input() item = ''; // decorate the property with @Input()\par
+\}\par
+\cf1\b <child-component [item]="currentItem"></child-component >\par
+\cf0\b0 export class AppComponent \{\par
+  currentItem = 'Television';\par
+\}\par
+-------\par
+\cf1 Assigning an alias to custom property binding\par
+\cf0 @Input\cf1 ('childMsg\cf0 ') childMessage: string;\par
+import \{ Component \} from '@angular/core';\par
+\par
+@Component(\{\par
+  selector: 'app-parent',\par
+\cf1   template: '<app-child [childMsg]="messageFromParent"></app-child>'\par
+\cf0\})\par
+export class ParentComponent \{\par
+  messageFromParent: string = 'Hello from the parent!';\par
+\}\par
+------------------------------------------\par
+\cf1\b\fs32 Custom event binding in Angular\par
+@output()-->Data flows from child to parent\par
+\par
+\cf0\b0\fs24 In Angular, custom event binding allows you to create and emit custom events from a child component to notify the parent component about certain actions or changes. It establishes a communication channel between the child and parent components, allowing them to interact and share data.\par
+export class ChildComponent \{\par
+  @Output() customEvent: EventEmitter<string> = new EventEmitter<string>();\par
+  onButtonClick() \{\par
+    this.customEvent.emit('Custom event emitted from child component!');\par
+  \}\par
+\}\par
+import \{ Component \} from '@angular/core';\par
+\par
+@Component(\{\par
+  selector: 'app-parent',\par
+  template: '<app-child (customEvent)="onCustomEvent($event)"></app-child><p>\{\{ messageFromChild \}\}</p>'\par
+\})\par
+export class ParentComponent \{\par
+  messageFromChild: string = '';\par
+\par
+  onCustomEvent(message: string) \{\par
+    this.messageFromChild = message;\par
+  \}\par
+\}\par
+\cf1\ul\b\i\fs32 VIEW ENCAPSULATION\par
+\cf0\ulnone\b0\i0\fs24 In Angular, View Encapsulation is a mechanism that controls how the styles defined in the component are applied to the DOM elements. It prevents styles defined in one component from affecting elements in other components and helps to create more modular and isolated styles for individual components.\par
+Angular provides three types of View Encapsulation:\par
+\cf1 Emulated (default): \cf0 This is the default mode of View Encapsulation in Angular. It emulates Shadow DOM behavior by appending unique attributes to the DOM elements. These attributes are used to scope the component's styles, making them isolated to that specific component. This is achieved through Angular's styling processor, so it works across different browsers, including those that don't support Shadow DOM natively.\par
+\cf1 Shadow DOM (deprecated): \cf0 This mode uses the native Shadow DOM of the browser if it is available. Shadow DOM provides true encapsulation by creating a separate DOM tree for the component and its styles. However, this mode has been deprecated in Angular as of Angular 6, and the Emulated mode is recommended for broader compatibility.\par
+\cf1 None: \cf0 In this mode, the styles defined in the component are not scoped and applied globally. This means that the styles defined in one component can affect elements in other components. This mode should be used with caution, as it can lead to potential style conflicts in larger applications.\par
+\cf1\b\fs32 Local references in  template\par
+\cf0\b0\fs24 In Angular, local references (also known as template reference variables) are a way to get access to elements or components in the template and use them within the component class. Local references are defined using the # symbol in the template and can be used for various purposes, such as accessing DOM elements, components, and directives.\par
+import \{ Component \} from '@angular/core';\par
+\par
+@Component(\{\par
+  selector: 'app-example',\par
+  template: `\par
+    <\cf1 input #inputRef type="\cf0 text">\par
+    <button (click)="logValue(\cf1 inputRef\cf0 .value)">Log Value</button>\par
+\})\par
+export class ExampleComponent \{\par
+  logValue(value: string) \{\par
+    console.log(value);\par
+  \}\par
+\}\par
+\cf1\b\fs32 @ViewChild decorator\par
+\cf0\b0\fs24 In Angular, @ViewChild is a decorator that allows you to access an element, component, or directive from the template in the component class. It provides a way to interact with elements or components directly in the component code, allowing you to access their properties and methods programmatically.\par
+import \{ Component, ViewChild, ElementRef \} from '@angular/core';\par
+@Component(\{\par
+  selector: 'app-example',\par
+  template: `\par
+    <input #inputRef type="text">\par
+    <button (click)="logValue()">Log Value</button>\par
+\})\par
+export class ExampleComponent \{\par
+  @ViewChild('inputRef', \{ static: false \}) inputElement: ElementRef;\par
+  logValue() \{\par
+    if (this.inputElement) \{\par
+      console.log(this.inputElement.nativeElement.value);\par
+    \}\par
+  \}\par
+\}\par
+\cf1\b\fs32 ng-content-\cf0\b0\fs24       \cf1 <ng-content></ng-content>\cf0\par
+In Angular, ng-content is a powerful feature that allows you to project content from the parent component's template into a designated placeholder within the child component's template. It enables you to create reusable components that can accept and display content provided by the parent component.The ng-content directive is used within the child component's template as a placeholder for content that will be passed from the parent component.\par
+import \{ Component \} from '@angular/core';\par
+@Component(\{\par
+  selector: 'app-child',\par
+  template: `\par
+    <div class="child-component">\par
+      <h2>Child Component</h2>\par
+      \cf1 <ng-content></ng-content>\par
+\cf0     </div>\par
+  styles: ['.child-component \{ border: 1px solid #ccc; padding: 10px; \}']\par
+\})\par
+export class ChildComponent \{\}\par
+mport \{ Component \} from '@angular/core';\par
+@Component(\{\par
+  selector: 'app-parent',\par
+  template: `\par
+    <app-child>\cf1\par
+      <p>This content is projected from the parent component into the child component.</p>\par
+      <button>Button inside the parent component</button>\par
+\cf0     </app-child>\par
+\})\par
+export class ParentComponent \{\}\par
+\cf1\b\fs32 @ContentChild decorator\par
+\cf0\b0\fs24 Absolutely! In addition to @ViewChild, Angular also provides @ContentChild decorator, which allows you to access content projected into a component using <ng-content>. This is especially useful when you want to interact with projected content or components that are passed as content within the component.\par
+import \{ Component, ContentChild, ElementRef \} from '@angular/core';\par
+@Component(\{\par
+  selector: 'app-parent',\par
+  template: '<ng-content \cf1 #myDiv\cf0 ></ng-content>'\par
+\})\par
+export class ParentComponent \{\par
+  @ContentChild('\cf1 myDiv\cf0 ', \{ static: true \}) myDiv: ElementRef;\par
+\par
+  ngAfterContentInit() \{\par
+    // Access the native element of the div projected in ng-content\par
+    console.log(this.myDiv.nativeElement);\par
+  \}\par
+\}\par
+\par
+\cf1\b\fs32 Component Life cycles\par
+\cf0\b0\fs24 Here are the key life cycle hooks of an Angular component, listed in the order they are called during the component's life cycle:\par
+\cf3\ul\b\i ngOnChanges\cf0\ulnone\b0\i0 : This hook is called when one or more of the component's input properties change. It provides information about the changes through a SimpleChanges object.\par
+\cf3\ul\b\i ngOnInit\cf0\ulnone\b0\i0 : This hook is called after the component's constructor and after the component has received its initial inputs. It is commonly used to initialize data and perform setup tasks for the component.\par
+\cf3\ul\b ngDoCheck\cf0\ulnone\b0 : This hook is called during every change detection cycle. It allows you to implement custom change detection logic and perform actions when the component's data changes.\par
+\cf3\ul\b\i ngAfterContentInit\cf0\ulnone\b0\i0 : This hook is called after Angular projects external content into the component's view (e.g., using ng-content). It is typically used when the component needs to interact with its content children.\par
+\cf3\ul\b\i ngAfterContentChecked\cf0\ulnone\b0\i0 : This hook is called after Angular checks the content projected into the component. It is used when you need to perform additional logic after the content has been checked.\par
+\cf3\ul\b\i ngAfterViewInit\cf0\ulnone\b0\i0 : This hook is called after Angular initializes the component's view and child views (e.g., using ViewChild). It is commonly used for tasks that require access to the component's view, such as initializing third-party libraries.\par
+\cf3\ul\b\i ngAfterViewChecked\cf0\ulnone\b0\i0 : This hook is called after Angular checks the component's view and child views for changes. It is used when you need to perform additional logic after the view has been checked.\par
+\cf3\ul\b\i ngOnDestroy\cf0\ulnone\b0\i0 : This hook is called just before the component is destroyed. It allows you to clean up resources, such as unsubscribing from observables and detaching event handlers, to prevent memory leaks.\par
+\cf1\ul\b\i\fs32 Angular Custom Directives\par
+\cf0\ulnone\b0\i0\fs24 ng generate directive DirectiveName- \cf1 ng g d DirectiveName\cf0 - to create a new directive.\cf3 Creating a new directive is equal to creating a new attribute in html tags.\cf0 Creating a basic attribute directive in Angular allows you to attach custom behavior to elements in your templates. Attribute directives are used as HTML attributes and are denoted by square brackets, for example, [myDirective]. They can modify the behavior or appearance of the associated element\cf3 .\par
+\cf0 import \{ Directive, HostListener, ElementRef \} from '@angular/core';\par
+@Directive(\{\par
+  selector: '[myDirective]'\par
+\})\par
+export class MyDirectiveDirective \{\par
+  constructor(private elementRef: ElementRef) \{\}\par
+nfOnInit()\par
+\{\par
+this.elementRef.nativeElement.style.backgroundColor = 'yellow';\par
+\}\par
+import \{ NgModule \} from '@angular/core';\par
+import \{ BrowserModule \} from '@angular/platform-browser';\par
+import \{ MyDirectiveDirective \} from './my-directive.directive';\par
+import \{ AppComponent \} from './app.component';\par
+@NgModule(\{\par
+  declarations: [\par
+    AppComponent,\par
+    MyDirectiveDirective  // <-- Add your directive here\par
+  ],\par
+  imports: [\par
+    BrowserModule\par
+  ],\par
+  providers: [],\par
+  bootstrap: [AppComponent]\par
+\})\par
+export class AppModule \{ \}\par
+\cf1\ul\b\i  Renderer2 \par
+\cf0\ulnone\b0\i0 import \{ Directive, HostListener, ElementRef, Renderer2 \} from '@angular/core';\par
+\par
+@Directive(\{\par
+  selector: '[myDirective]'\par
+\})\par
+export class MyDirectiveDirective \{\par
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) \{\}\par
+\par
+  @HostListener('click') onClick() \{\par
+    this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'yellow');\par
+  \}\par
+\}\par
+<div myDirective>\par
+  Click me to change my background color!\par
+</div>\par
+To create an attribute directive using the Angular Renderer2, you can follow a similar process as before but instead of directly manipulating the element's properties, you'll use the Renderer2 service provided by Angular to perform the DOM manipulation. This approach is recommended over directly accessing the DOM when you want to ensure compatibility with server-side rendering or web workers.\par
+\cf1\ul\b\i\fs28 @HostListener ('click')\par
+\cf0\ulnone\b0\i0\fs24 The @HostListener decorator is used to listen to events on the host element (the element where the directive is applied) and trigger the associated method when the event occurs. In this case, when a click event occurs on the element with the [myDirective] attribute, the onClick() method will be called, and it will use the Renderer2 service to set the background color of the element to yellow.\par
+import \{ Directive, HostListener, ElementRef, Renderer2 \} from '@angular/core';\par
+@Directive(\{\par
+  selector: '[myDirective]'\par
+\})\par
+export class MyDirectiveDirective \{\par
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) \{\}\par
+  @HostListener('click') onClick() \{\par
+    this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'yellow');\par
+  \}\par
+\}\par
+------------------------------------------------------\par
+\cf1\ul\b\i\fs32 HostBinding \cf0\ulnone\b0\i0\fs24\par
+The \cf1 @HostBinding \cf0 decorator is used in Angular directives to bind a directive's property to a host element property or attribute. It's a convenient way to set properties on the host element without directly accessing the DOM.\par
+import \{ Directive, HostListener, HostBinding \} from '@angular/core';\par
+@Directive(\{\par
+  selector: '[myDirective]'\par
+\})\par
+export class MyDirectiveDirective \{\par
+  @HostBinding('style.backgroundColor') backgroundColor: string;\par
+  @HostListener('click') onClick() \{\par
+    this.backgroundColor = 'yellow';\par
+  \}\par
+\}\par
+\cf1\ul\b\i\fs28 ngSwitch\cf0\ulnone\b0\i0\fs24\par
+<div [ngSwitch]="userRole">\par
+  <div *ngSwitchCase="'admin'">Welcome, Admin!</div>\par
+  <div *ngSwitchCase="'manager'">Hello, Manager!</div>\par
+  <div *ngSwitchCase="'employee'">Hi, Employee!</div>\par
+  <div *ngSwitchDefault>Unknown Role</div>\par
+</div>\par
+\cf1\ul\b\i\fs32 Services & Dependency Injection\par
+\cf0\ulnone\b0\i0\fs24 In Angular, services and Dependency Injection (DI) play a crucial role in separating concerns and promoting modularity in your application. Services are used to encapsulate reusable business logic, data management, and other functionalities, while Dependency Injection is a mechanism used to provide these services to the components that need them.\par
+import \{ Injectable \} from '@angular/core';\par
+\par
+@Injectable(\{\par
+  providedIn: 'root', // This registers the service at the root level\par
+\})\par
+export class MyService \{\par
+  // Service logic and methods go here\par
+\}\par
+@Component(\{\par
+  selector: 'app-my-component',\par
+  template: `...`,\par
+\})\par
+export class MyComponent \{\par
+  constructor(private myService: MyService) \{\par
+    // Now you can use methods and properties of myService\par
+  \}\par
+\}\par
+\cf1\ul\b\i\fs32 Routing\cf0\ulnone\b0\i0\fs24\par
+Routing in Angular refers to the mechanism used to navigate between different views or components within a single-page application (SPA). Angular provides a built-in router module that allows you to define routes, associate them with specific components, and manage navigation within your application.\par
+import \{ NgModule \} from '@angular/core';\par
+import \{ RouterModule, Routes \} from '@angular/router';\par
+import \{ HomeComponent \} from './home.component';\par
+import \{ AboutComponent \} from './about.component';\par
+\par
+\cf1 const routes: Routes = [\par
+  \{ path: 'home', component: HomeComponent \},\par
+  \{ path: 'about', component: AboutComponent \},\par
+  // Other routes can be added here\par
+];\par
+\cf0\par
+@NgModule(\{\par
+\cf1   imports: [RouterModule.forRoot(routes)],\par
+\cf0   exports: [RouterModule]\par
+\})\par
+export class AppRoutingModule \{ \}\par
+\cf1 <router-outlet></router-outlet>\par
+<a routerLink="/link"></a>\par
+\cf0 import \{ Component \} from '@angular/core';\par
+import \{ Router \} from '@angular/router';\par
+\par
+@Component(\{\par
+  selector: 'app-navigation',\par
+  template: `\par
+    <button (click)="goToHome()">Home</button>\par
+    <button (click)="goToAbout()">About</button>\par
+\})\par
+export class NavigationComponent \{\par
+  constructor(private router: Router) \{ \}\par
+\par
+  goToHome() \{\par
+    this.router.navigate(['/home']);\par
+  \}\par
+\par
+  goToAbout() \{\par
+    this.router.navigate(['/about']);\par
+  \}\par
+onclick()\par
+  \{\par
+    this.router.navigate(['/facebook'],\{relativeTo:this.activetedRoute\});\par
+  \}\par
+\}\par
+Route Parameters:\par
+You can also pass parameters to routes using the route's path. For example, if you want to display details for a specific item, you can define a route with a parameter:\par
+onst routes: Routes = [\par
+  \{ path: 'items/:id', component: ItemDetailComponent \},\par
+];\par
+import \{ ActivatedRoute \} from '@angular/router';\par
+\par
+constructor(private route: ActivatedRoute) \{\par
+  this.route.params.subscribe(params => \{\par
+    const itemId = params['id'];\par
+    // Use itemId to fetch and display item details\par
+  \});\par
+\}\par
+\cf1\ul\b\i\fs32 Fetch Data from path\ulnone\b0\i0\fs24\par
+\cf0 import \{ Component \} from '@angular/core';\par
+import \{ ActivatedRoute \} from '@angular/router';\par
+@Component(\{\par
+  selector: 'app-about',\par
+  templateUrl: './about.component.html',\par
+  styleUrls: ['./about.component.css']\par
+\})\par
+export class AboutComponent \{\par
+  obj:\{\par
+    id:number,\par
+    name:string\par
+  \}\par
+  constructor(private route:\cf1 ActivatedRoute\cf0 )\par
+  \{\par
+    this.obj=\{\cf1\par
+      id:this.route.snapshot.params['id'],\par
+      name:this.route.snapshot.params['name']\par
+\cf0     \}\par
+  \}\par
+\}\par
+const routes: Routes = [\par
+  \{path:'google',component:GoogleComponent\},\par
+  \cf1\{path:'about/:id/:name',\cf0 component:AboutComponent\}];\par
+\cf1\ul\b\i\fs32 ------------------------------------\par
+Fetching data from path reactively\par
+\cf0\ulnone\b0\i0\fs24 @Component(\{\par
+  selector: 'app-item-detail',\par
+  template: `\par
+    <h2>Item Details</h2>\par
+    <p>Item ID: \{\{ itemId \}\}</p>\par
+  `\par
+\})\par
+export class ItemDetailComponent implements OnInit \{\par
+  itemId: string;\par
+\par
+  constructor(private route: ActivatedRoute) \{\}\par
+\par
+  ngOnInit() \{\cf1\par
+    // Fetch the route parameter using paramMap\par
+    this.route.paramMap.subscribe(params => \{\par
+      this.itemId = params.get('id');\par
+    \});\par
+\cf0   \}\par
+\}\par
+\cf1\ul\b\i\fs32 QueryParams in routing\cf0\ulnone\b0\i0\fs24\par
+<input [routerLink]="['/about','346','Rateesh']"  [queryParams]="\{city:'ooty'\}" fragments="loading" type="submit">\par
+    //results in this path -{{\field{\*\fldinst{HYPERLINK http://localhost:4200/about/346/Rateesh?city=ooty }}{\fldrslt{http://localhost:4200/about/346/Rateesh?city=ooty\ul0\cf0}}}}\f0\fs24\par
+\cf1 Quer parameters programatically\par
+\cf0 const routes: Routes = [\par
+  \{ path: 'items', component: ItemsComponent \},\par
+];\par
+import \{ Component \} from '@angular/core';\par
+import \{ Router \} from '@angular/router';\par
+\par
+@Component(\{\par
+  selector: 'app-navigation',\par
+  template: `\par
+    <button (click)="goToItems()">View Items</button>\par
+  `\par
+\})\par
+export class NavigationComponent \{\par
+  constructor(private router: Router) \{\}\par
+\par
+  goToItems() \{\par
+    // Pass query parameters using queryParams\par
+    this.router.navigate(['/items'], \{ queryParams: \{ category: 'electronics', filter: 'price' \} \});\par
+  \}\par
+\}\par
+\cf1\ul\b\i\fs32 Fetching query Parameters\cf0\ulnone\b0\i0\fs24 :\par
+import \{ Component, OnInit \} from '@angular/core';\par
+import \{ ActivatedRoute \} from '@angular/router';\par
+@Component(\{\par
+  selector: 'app-items',\par
+  template: `\par
+    <h2>Items</h2>\par
+    <p>Category: \{\{ category \}\}</p>\par
+    <p>Filter: \{\{ filter \}\}</p>\par
+  `\par
+\})\par
+export class ItemsComponent implements OnInit \{\par
+  category: string;\par
+  filter: string;\par
+\par
+  constructor(private route: ActivatedRoute) \{\}\par
+\par
+  ngOnInit() \{\par
+    // Fetch query parameters using queryParams\par
+    this.route.queryParams.subscribe(params => \{\par
+      this.category = params['category'];\par
+      this.filter = params['filter'];\par
+    \});\par
+  \}\par
+\}\par
+\par
+\par
+\par
+}
+ 

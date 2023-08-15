@@ -1,0 +1,163 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Consolas;}{\f2\fnil\fcharset0 Consolas;}}
+{\colortbl ;\red0\green0\blue0;\red232\green242\blue254;\red42\green161\blue152;\red127\green0\blue85;\red100\green100\blue100;\red42\green0\blue255;\red212\green212\blue212;\red0\green0\blue192;\red106\green62\blue62;\red240\green216\blue168;}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 cd kafka_2.13-3.5.0\par
+.\\bin\\windows\\zookeeper-server-start.bat .\\config\\zookeeper.properties- Run Command to start ZooKeper\par
+.\\bin\\windows\\kafka-server-start.bat .\\config\\server.properties -Run Command to start Server\par
+\par
+Create a Spring boot project with the following Dependencies\par
+Apache for Kafka and Spring WEb.\par
+propertie file - \cf1\highlight2\f1\fs20 spring.kaf\ul aka.bootstrap-servers\ulnone =\cf3 localhost:9092\par
+\cf4\highlight0\b package\cf1\b0  com.example.demo.config;\cf0\par
+\par
+\cf4\b import\cf1\b0  org.apache.kafka.clients.admin.NewTopic;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.context.annotation.Bean;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.config.TopicBuilder;\cf0\par
+\par
+\cf5 @\cf1 org.springframework.context.annotation.\cf5 Configuration\cf0\par
+\cf4\b public\cf1\b0  \cf4\b class\cf1\b0  Configuration \{\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @Bean\cf0\par
+\cf1\tab\cf4\b public\cf1\b0  NewTopic builder()\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  TopicBuilder.\i name\i0 (\cf6 "TopicName_Producer"\cf1 ).build();\cf0\par
+\cf1\tab\tab\cf0\par
+\cf1\tab\}\cf0\par
+\par
+\cf1\}\cf0\par
+\f0\fs22 Create the above class and below class\par
+\par
+\cf4\b\f1\fs20 package\cf1\b0  com.example.demo.config;\cf0\par
+\par
+\cf4\b import\cf1\b0  java.util.HashMap;\cf0\par
+\cf4\b import\cf1\b0  java.util.Map;\cf0\par
+\par
+\cf4\b import\cf1\b0  org.apache.kafka.clients.producer.ProducerConfig;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.beans.factory.annotation.Value;\cf0\par
+\cf4\b import\cf1\b0  \highlight7 org.springframework.context.annotation.Bean\highlight0 ;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.context.annotation.Configuration;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.core.DefaultKafkaProducerFactory;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.core.KafkaTemplate;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.core.ProducerFactory;\cf0\par
+\par
+\cf4\b import\cf1\b0  org.apache.kafka.common.serialization.StringSerializer;\cf0\par
+\par
+\cf5 @Configuration\cf0\par
+\cf4\b public\cf1\b0  \cf4\b class\cf1\b0  KafkaProducerConfig \{\cf0\par
+\cf1\tab\cf5 @Value\cf1 (\cf6 "$\{spring.kafaka.bootstrap-servers\}"\cf1 )\cf0\par
+\cf1\tab\cf4\b private\cf1\b0  String \cf8 bootstrapServers\cf1 ;\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf4\b public\cf1\b0  Map<String,Object> producerCofig()\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab  Map<String,Object> \cf9 props\cf1 =\cf4\b new\cf1\b0  HashMap<>();\cf0\par
+\cf1\tab\tab\cf9 props\cf1 .put(ProducerConfig.\cf8\b\i BOOTSTRAP_SERVERS_CONFIG\cf1\b0\i0 ,\cf8 bootstrapServers\cf1 );\cf0\par
+\cf1\tab\tab\cf9 props\cf1 .put(ProducerConfig.\cf8\b\i VALUE_SERIALIZER_CLASS_CONFIG\cf1\b0\i0 ,StringSerializer.\cf4\b class\cf1\b0 );\cf0\par
+\cf1\tab\tab\cf9 props\cf1 .put(ProducerConfig.\cf8\b\i KEY_SERIALIZER_CLASS_CONFIG\cf1\b0\i0 , StringSerializer.\cf4\b class\cf1\b0 );\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  \cf9 props\cf1 ;\cf0\par
+\cf1\tab\}\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @\highlight7 Bean\cf0\highlight0\par
+\cf1\tab\cf4\b public\cf1\b0  ProducerFactory<String, String> producerFactory()\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  \cf4\b new\cf1\b0  DefaultKafkaProducerFactory<>(producerCofig());\cf0\par
+\cf1\tab\}\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @\highlight7 Bean\cf0\highlight0\par
+\cf1\tab\cf4\b public\cf1\b0  KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> \cf9 producerFactory\cf1 )\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  \cf4\b new\cf1\b0  KafkaTemplate<>(\cf9 producerFactory\cf1 );\cf0\par
+\cf1\tab\}\cf0\par
+\par
+\cf1\}\par
+\par
+package com.example.demo;\par
+\par
+import org.springframework.boot.CommandLineRunner;\par
+import org.springframework.boot.SpringApplication;\par
+import org.springframework.boot.autoconfigure.SpringBootApplication;\par
+import org.springframework.context.annotation.Bean;\par
+import org.springframework.kafka.core.KafkaTemplate;\par
+\par
+@SpringBootApplication\par
+public class ProducerApplication \{\par
+\par
+\tab public static void main(String[] args) \{\par
+\tab\tab SpringApplication.run(ProducerApplication.class, args);\par
+\tab\tab\par
+\tab\tab\par
+\tab\tab\tab\par
+\tab\}\par
+\tab @Bean\par
+\tab CommandLineRunner commandLineRunner(KafkaTemplate<String,String> kafkaTemplate) \{\par
+\tab\tab return args->\{\par
+\tab\tab\tab kafkaTemplate.send("TopicName_Producer","Hello");\par
+\tab\tab\tab\};\par
+\tab\tab\}\par
+\}\par
+\par
+\f2\lang1033 Run following Command to Subscribe the Producer\par
+kafka-console-consumer.bat --topic Control --bootstrap-server localhost:9092 --from-beginning in Kafka.Windows Folder\par
+\par
+Consumer Part\par
+\cf4\b\f1 package\cf1\b0  com.example.demo.config;\cf0\par
+\par
+\cf4\b import\cf1\b0  java.util.HashMap;\cf0\par
+\cf4\b import\cf1\b0  java.util.Map;\cf0\par
+\par
+\cf4\b import\cf1\b0  org.apache.kafka.clients.consumer.ConsumerConfig;\cf0\par
+\cf4\b import\cf1\b0  org.apache.kafka.clients.producer.ProducerConfig;\cf0\par
+\cf4\b import\cf1\b0  org.apache.kafka.common.serialization.StringSerializer;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.beans.factory.annotation.Value;\cf0\par
+\cf4\b import\cf1\b0  \highlight7 org.springframework.context.annotation.Bean\highlight0 ;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.context.annotation.Configuration;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.config.KafkaListenerContainerFactory;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.core.ConsumerFactory;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.core.DefaultKafkaConsumerFactory;\cf0\par
+\cf4\b import\cf1\b0  org.springframework.kafka.listener.ConcurrentMessageListenerContainer;\cf0\par
+\par
+\cf5 @Configuration\cf0\par
+\cf4\b public\cf1\b0  \cf4\b class\cf1\b0  KafkaConsumerConfig \{\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @Value\cf1 (\cf6 "$\{spring.kafaka.bootstrap-servers\}"\cf1 )\cf0\par
+\cf1\tab\cf4\b private\cf1\b0  String \cf8 bootstrapServers\cf1 ;\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @\highlight7 Bean\cf0\highlight0\par
+\cf1\tab\cf4\b public\cf1\b0  Map<String,Object> consumerCofig()\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab  Map<String,Object> \cf9 props\cf1 =\cf4\b new\cf1\b0  HashMap<>();\cf0\par
+\cf1\tab\tab\cf9 props\cf1 .put(ProducerConfig.\cf8\b\i BOOTSTRAP_SERVERS_CONFIG\cf1\b0\i0 ,\cf8 bootstrapServers\cf1 );\cf0\par
+\cf1\tab\tab\cf9 props\cf1 .put(ConsumerConfig.\cf8\b\i KEY_DESERIALIZER_CLASS_CONFIG\cf1\b0\i0 , StringSerializer.\cf4\b class\cf1\b0 );\cf0\par
+\cf1\tab\tab\cf9 props\cf1 .put(ConsumerConfig.\cf8\b\i VALUE_DESERIALIZER_CLASS_CONFIG\cf1\b0\i0 ,StringSerializer.\cf4\b class\cf1\b0 );\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  \cf9 props\cf1 ;\cf0\par
+\cf1\tab\}\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @\highlight7 Bean\cf0\highlight0\par
+\cf1\tab\cf4\b public\cf1\b0  ConsumerFactory<String, String> consumerFactory()\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  \cf4\b new\cf1\b0  DefaultKafkaConsumerFactory<>(consumerCofig());\cf0\par
+\cf1\tab\}\cf0\par
+\cf1\tab\cf0\par
+\cf1\tab\cf5 @\highlight7 Bean\cf0\highlight0\par
+\cf1\tab\cf4\b public\cf1\b0  KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> factory(\cf0\par
+\cf1\tab\tab\tab  ConsumerFactory<String, String> \cf9 consumerFactory\cf0\par
+\cf1\tab\tab\tab )\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab ConcurrentKafkaListenerContainerFactory<String, String> \cf9 factory\cf1 =\cf4\b new\cf1\b0  ConcurrentKafkaListenerContainerFactory<>();\cf0\par
+\cf1\tab\tab\cf9 factory\cf1 .setConsumerFactory(\cf9 consumerFactory\cf1 );\cf0\par
+\cf1\tab\tab\cf4\b return\cf1\b0  \cf9 factory\cf1 ;\cf0\par
+\cf1\tab\}\cf0\par
+\par
+\cf1\}\cf0\par
+\cf5\lang9 @KafkaListener\cf1 (topics = \cf6 "Control1"\cf1  , groupId = \cf6 "101"\cf1 )\cf0\par
+\cf1\tab\cf4\b void\cf1\b0  listner(String \cf9\highlight10 data\cf1\highlight0 )\cf0\par
+\cf1\tab\{\cf0\par
+\cf1\tab\tab System.\cf8\b\i out\cf1\b0\i0 .println(\cf9\highlight7 data\cf1\highlight0 );\cf0\par
+\cf1\tab\}\cf0\par
+\f0\fs22\par
+\par
+\par
+}
+ 
