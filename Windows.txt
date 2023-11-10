@@ -1,0 +1,8 @@
+Device name	LAPTOP-GK3M2A4F
+Processor	AMD Ryzen 5 4600H with Radeon Graphics            3.00 GHz
+Installed RAM	8.00 GB (7.36 GB usable)
+Device ID	1EBD0E4C-EECE-46F1-932D-9B297B2C00D5
+Product ID	00327-36258-18317-AAOEM
+System type	64-bit operating system, x64-based processor
+Pen and touch	No pen or touch input is available for this display
+XYA5-BBPR-XBVX-KYNV
